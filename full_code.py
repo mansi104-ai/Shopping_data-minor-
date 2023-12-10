@@ -1,5 +1,5 @@
 import pandas as pd
-
+import tensorflow as tf
 # Load the Excel file
 file_path = 'Raw_Data.csv'  # Replace with the actual file path
 df = pd.read_csv(file_path)
@@ -186,45 +186,3 @@ plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 plt.title('Percentage of Orders from Each Channel')
 plt.show()
 
-# Data Preprocessing for 'Age Group' and 'Gender' columns
-df[['Age Group', 'Gender']] = df[['Age Group', 'Gender']].apply(lambda x: x.str.strip().str.lower())
-
-# Assuming the data structure is similar to the provided table
-# Replace 'Age Group' and 'Gender' with the actual column names
-
-# Pivot the data to get the percentage division
-pivot_data = df.pivot_table(index='Age Group', columns='Gender', aggfunc='size', fill_value=0)
-total_per_age_group = pivot_data.sum(axis=1)
-percentage_data = pivot_data.div(total_per_age_group, axis=0) * 100
-
-# Plot vertical bar graph
-fig, ax = plt.subplots()
-
-# Bar width
-bar_width = 0.35
-
-# X-axis labels
-age_groups = percentage_data.index
-x_men = range(len(age_groups))
-x_women = [x + bar_width for x in x_men]
-
-# Plot bars for Men
-bars_men = ax.bar(x_men, percentage_data['men'], width=bar_width, label='Men', color='blue')
-
-# Plot bars for Women
-bars_women = ax.bar(x_women, percentage_data['women'], width=bar_width, label='Women', color='red')
-
-# Set the X-axis labels
-ax.set_xticks([x + bar_width/2 for x in x_men])
-ax.set_xticklabels(age_groups)
-
-# Set labels and title
-ax.set_ylabel('Percentage Division')
-ax.set_xlabel('Age Group')
-plt.title('Orders: Age vs Gender')
-
-# Add legend
-ax.legend()
-
-# Show the bar graph
-plt.show()
